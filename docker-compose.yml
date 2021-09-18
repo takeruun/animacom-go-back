@@ -1,0 +1,35 @@
+version: '3'
+services:
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_NAME: animacom_dev
+    volumes:
+      - .:/go/src/app
+      - bin:/go/bin
+      - pkg:/go/pkg
+    depends_on:
+      - db
+    ports:
+      - 3001:3001
+    tty: true
+    stdin_open: true
+
+  db:
+    image: mysql:8.0.16
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+  bin:
+  pkg:
