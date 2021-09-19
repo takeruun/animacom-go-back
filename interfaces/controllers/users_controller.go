@@ -1,0 +1,32 @@
+package controllers
+
+import (
+	database "app/interfaces/database"
+	usecase "app/usecase"
+	"strconv"
+)
+
+type UsersController struct {
+	Interactor usecase.UsersInteractor
+}
+
+func NewUsersController(db database.DB) *UsersController {
+	return &UsersController{
+		Interactor: usecase.UsersInteractor{
+			DB:    &database.DbRepository{DB: db},
+			Users: &database.UsersRepository{},
+		},
+	}
+}
+
+func (controller *UsersController) Get(c Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	user, err := controller.Interactor.Get(id)
+	if err != nil {
+		c.JSON(500, NewH(err.Error(), nil))
+		return
+	}
+
+	c.JSON(200, NewH("success", user))
+}
