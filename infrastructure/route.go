@@ -28,8 +28,11 @@ func (r *Routing) setRouting() {
 	usersController := controllers.NewUsersController(r.DB)
 	v1 := r.Gin.Group("v1")
 	{
-		v1.GET("/users/:id", func(c *gin.Context) { usersController.Get(c) })
-		v1.POST("/users", func(c *gin.Context) { usersController.Create(c) })
+		users := v1.Group("users")
+		{
+			users.GET("/:id", func(c *gin.Context) { usersController.Get(c) })
+			users.POST("/auth/registrations", func(c *gin.Context) { usersController.Create(c) })
+		}
 	}
 }
 

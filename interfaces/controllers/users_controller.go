@@ -34,10 +34,10 @@ func (controller *UsersController) Get(c Context) {
 }
 
 func (controller *UsersController) Create(c Context) {
-	userJSON := models.UserJSON{}
-	c.BindJSON(&userJSON)
+	user := models.User{}
+	c.BindJSON(&user)
 
-	user, err := controller.Interactor.Create(userJSON)
+	user, err := controller.Interactor.Create(user)
 	if err != nil {
 		c.JSON(500, NewH(err.Error(), nil))
 		return
