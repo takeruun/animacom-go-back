@@ -4,11 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      DB_USER: root
-      DB_PASSWORD: password
-      DB_HOST: db
-      DB_NAME: animacom_dev
     volumes:
       - .:/go/src/app
       - bin:/go/bin

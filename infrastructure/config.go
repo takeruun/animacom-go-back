@@ -1,6 +1,11 @@
 package infrastructure
 
-import "os"
+import (
+	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 type Config struct {
 	DB struct {
@@ -23,6 +28,10 @@ type Config struct {
 }
 
 func NewConfig() *Config {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Printf("読み込み出来ませんでした。")
+	}
 
 	c := new(Config)
 
