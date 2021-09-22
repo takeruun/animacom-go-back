@@ -12,5 +12,6 @@ func main() {
 
 	db := infrastructure.NewDB()
 	r := infrastructure.NewRouting(db)
+	r.SetMiddleware()
 	r.Run()
 }

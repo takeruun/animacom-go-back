@@ -1,7 +1,8 @@
 package usecase
 
 import (
-	"app/models"
+	models "app/models"
+	auth "app/usecase/auth"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -23,7 +24,7 @@ func (interactor *UsersInteractor) Get(id int) (user models.User, err error) {
 	return
 }
 
-func (interactor *UsersInteractor) Create(u models.User) (user models.User, err error) {
+func (interactor *UsersInteractor) Create(u models.User) (user models.User, token string, err error) {
 	db := interactor.DB.Connect()
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.EncryptedPassword), bcrypt.DefaultCost)
@@ -31,8 +32,28 @@ func (interactor *UsersInteractor) Create(u models.User) (user models.User, err 
 	user = models.User{Name: u.Name, Email: u.Email, EncryptedPassword: string(hash), CreatedAt: time.Now(), UpdatedAt: time.Now()}
 	user, err = interactor.Users.Add(db, user)
 	if err != nil {
-		return models.User{}, error(err)
+		return models.User{}, "", error(err)
 	}
 
-	return
+	token, err = auth.GenerateToken(string(rune(user.ID)), time.Now())
+
+	return user, token, nil
+}
+
+func (interactor *UsersInteractor) Login(params models.UserLogin) (string, error) {
+	db := interactor.DB.Connect()
+
+	user, err := interactor.Users.FindByEmail(db, params.Email)
+	if err != nil {
+		return "", error(err)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.EncryptedPassword), []byte(params.Password))
+	if err != nil {
+		return "", error(err)
+	}
+
+	token, err := auth.GenerateToken(string(rune(user.ID)), time.Now())
+
+	return token, nil
 }

@@ -26,3 +26,12 @@ func (repo *UsersRepository) Add(db *gorm.DB, u models.User) (user models.User, 
 
 	return u, nil
 }
+
+func (repo *UsersRepository) FindByEmail(db *gorm.DB, email string) (user models.User, err error) {
+	result := db.First(&user, "email = ?", email)
+	if result.Error != nil {
+		return models.User{}, errors.New(result.Error.Error())
+	}
+
+	return user, nil
+}

@@ -6,4 +6,5 @@ type Context interface {
 	BindJSON(interface{}) error
 	Status(int)
 	JSON(code int, obj interface{})
+	Header(key string, value string)
 }

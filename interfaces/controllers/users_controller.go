@@ -37,11 +37,26 @@ func (controller *UsersController) Create(c Context) {
 	user := models.User{}
 	c.BindJSON(&user)
 
-	user, err := controller.Interactor.Create(user)
+	user, token, err := controller.Interactor.Create(user)
 	if err != nil {
 		c.JSON(500, NewH(err.Error(), nil))
 		return
 	}
 
+	c.Header("access-token", token)
 	c.JSON(200, NewH("success", user))
+}
+
+func (controller *UsersController) Login(c Context) {
+	params := models.UserLogin{}
+	c.BindJSON(&params)
+
+	token, err := controller.Interactor.Login(params)
+	if err != nil {
+		c.JSON(500, NewH(err.Error(), nil))
+		return
+	}
+
+	c.Header("access-token", token)
+	c.JSON(200, NewH("success", nil))
 }

@@ -1,7 +1,7 @@
 package infrastructure
 
 import (
-	"app/interfaces/controllers"
+	controllers "app/interfaces/controllers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,8 +32,13 @@ func (r *Routing) setRouting() {
 		{
 			users.GET("/:id", func(c *gin.Context) { usersController.Get(c) })
 			users.POST("/auth/registrations", func(c *gin.Context) { usersController.Create(c) })
+			users.POST("/auth/session", func(c *gin.Context) { usersController.Login(c) })
 		}
 	}
+}
+
+func (r *Routing) SetMiddleware() {
+	r.Gin.Use(gin.Recovery(), gin.Logger())
 }
 
 func (r *Routing) Run() {
