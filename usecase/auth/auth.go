@@ -24,13 +24,23 @@ func GenerateToken(userID string, now time.Time) (string, error) {
 	return token.SignedString([]byte(os.Getenv("TOKEN_KRY")))
 }
 
-func ParseToken(signedString string) (*Auth, error) {
+func ValidToken(signedString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(signedString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return "", fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(os.Getenv("TOKEN_KRY")), nil
 	})
+
+	if err != nil {
+		return nil, error(err)
+	}
+
+	return token, nil
+}
+
+func ParseToken(signedString string) (*Auth, error) {
+	token, err := ValidToken(signedString)
 
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
