@@ -23,6 +23,18 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  localstack:
+    image: localstack/localstack:0.12.16
+    ports:
+      - 4566:4566
+    environment:
+      SERVICES: s3
+      DEFAULT_REGION: ap-northeast-1
+      DATA_DIR: /tmp/localstack/data
+    volumes:
+      - localstack_data:/tmp/localstack
+
 volumes:
   mysql-data:
   pkg:
+  localstack_data:

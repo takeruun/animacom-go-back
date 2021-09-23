@@ -25,6 +25,15 @@ type Config struct {
 	Routing struct {
 		Port string
 	}
+	AWS struct {
+		S3 struct {
+			Region          string
+			Bucket          string
+			AccessKeyID     string
+			SecretAccessKey string
+			Endpoint        string
+		}
+	}
 }
 
 func NewConfig() *Config {
@@ -39,6 +48,12 @@ func NewConfig() *Config {
 	c.DB.Production.Username = os.Getenv("DB_USER")
 	c.DB.Production.Password = os.Getenv("DB_PASSWORD")
 	c.DB.Production.DBName = os.Getenv("DB_NAME")
+
+	c.AWS.S3.Region = "ap-northeast-1"
+	c.AWS.S3.Bucket = os.Getenv("S3_IMAGE_BUCKET")
+	c.AWS.S3.AccessKeyID = os.Getenv("AWS_ACCESS_KEY_ID")
+	c.AWS.S3.SecretAccessKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
+	c.AWS.S3.Endpoint = os.Getenv("S3_ENDPOINT")
 
 	c.DB.Test.Host = "localhost"
 	c.DB.Test.Username = "username"
