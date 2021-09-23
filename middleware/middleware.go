@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	auth "app/usecase/auth"
 	"log"
 	"net/http"
 	"time"
@@ -31,8 +32,8 @@ func LoginCheckMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Access-Token")
 
-		if len(token) == 0 {
-
+		_, err := auth.ValidToken(token)
+		if err != nil {
 			c.JSON(http.StatusUnauthorized, &H{Message: "please login"})
 			c.Abort()
 		} else {
