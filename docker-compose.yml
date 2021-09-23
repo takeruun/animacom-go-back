@@ -6,7 +6,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/go/src/app
-      - bin:/go/bin
       - pkg:/go/pkg
     depends_on:
       - db
@@ -26,5 +25,4 @@ services:
 
 volumes:
   mysql-data:
-  bin:
   pkg:
