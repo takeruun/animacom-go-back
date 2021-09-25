@@ -11,6 +11,11 @@ services:
       - db
     ports:
       - 3001:3001
+    environment:
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_NAME: animacom_dev
     tty: true
     stdin_open: true
 
