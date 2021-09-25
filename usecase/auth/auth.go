@@ -9,9 +9,9 @@ import (
 )
 
 type Auth struct {
-	Uid    string `json:"uid"`
-	Iat    int64  `json:"iat"`
-	Expiry int64  `json:"expiry"`
+	Uid    int   `json:"uid"`
+	Iat    int64 `json:"iat"`
+	Expiry int64 `json:"expiry"`
 }
 
 func GenerateToken(userID string, now time.Time) (string, error) {
@@ -63,7 +63,7 @@ func ParseToken(signedString string) (*Auth, error) {
 		return nil, fmt.Errorf("not found claims in %s", signedString)
 	}
 
-	userID, ok := claims["uid"].(string)
+	userID, ok := claims["uid"].(int)
 	if !ok {
 		return nil, fmt.Errorf("not found uid in %s", signedString)
 	}

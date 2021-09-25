@@ -29,7 +29,7 @@ func (interactor *UsersInteractor) Create(u models.User) (user models.User, toke
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.EncryptedPassword), bcrypt.DefaultCost)
 
-	user = models.User{Name: u.Name, Email: u.Email, EncryptedPassword: string(hash), CreatedAt: time.Now(), UpdatedAt: time.Now()}
+	user = models.User{Name: u.Name, Email: u.Email, EncryptedPassword: string(hash)}
 	user, err = interactor.Users.Add(db, user)
 	if err != nil {
 		return models.User{}, "", error(err)
