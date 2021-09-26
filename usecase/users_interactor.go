@@ -35,7 +35,7 @@ func (interactor *UsersInteractor) Create(u models.User) (user models.User, toke
 		return models.User{}, "", error(err)
 	}
 
-	token, err = auth.GenerateToken(string(rune(user.ID)), time.Now())
+	token, err = auth.GenerateToken(int(rune(user.ID)), time.Now())
 
 	return user, token, nil
 }
@@ -53,7 +53,7 @@ func (interactor *UsersInteractor) Login(params models.UserLogin) (string, error
 		return "", error(err)
 	}
 
-	token, err := auth.GenerateToken(string(rune(user.ID)), time.Now())
+	token, err := auth.GenerateToken(int(rune(user.ID)), time.Now())
 
 	return token, nil
 }
