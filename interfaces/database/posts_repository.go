@@ -9,7 +9,7 @@ import (
 
 type PostsRepository struct{}
 
-func (repo *PostsRepository) Add(db *gorm.DB, p models.PostForm) (post models.Post, err error) {
+func (repo *PostsRepository) Add(db *gorm.DB, p models.Post) (post models.Post, err error) {
 	result := db.Create(&p)
 	if result.Error != nil {
 		return models.Post{}, errors.New(result.Error.Error())

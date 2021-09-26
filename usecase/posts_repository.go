@@ -7,5 +7,5 @@ import (
 )
 
 type PostsRepository interface {
-	Add(db *gorm.DB, p models.PostForm) (post models.Post, err error)
+	Add(db *gorm.DB, p models.Post) (post models.Post, err error)
 }

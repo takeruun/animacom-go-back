@@ -27,12 +27,20 @@ func (controller *PostsController) Get(c Context, accessToken string) {
 }
 
 func (controller *PostsController) Create(c Context, accessToken string) {
-	postForm := models.PostForm{}
-	err := c.Bind(&postForm)
+	post := models.Post{}
+	err := c.Bind(&post)
 
 	if err != nil {
 		fmt.Println(err)
 		c.Status(http.StatusBadRequest)
 	}
-	controller.Interactor.Create(postForm, accessToken)
+
+	post, err = controller.Interactor.Create(post, accessToken)
+
+	if err != nil {
+		c.JSON(500, NewH(err.Error(), nil))
+		return
+	}
+
+	c.JSON(200, NewH("success", post))
 }

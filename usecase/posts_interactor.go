@@ -10,7 +10,7 @@ type PostsInteractor struct {
 	Posts PostsRepository
 }
 
-func (interactor *PostsInteractor) Create(p models.PostForm, accessToken string) (post models.Post, err error) {
+func (interactor *PostsInteractor) Create(p models.Post, accessToken string) (post models.Post, err error) {
 	db := interactor.DB.Connect()
 
 	auth, err := auth.ParseToken(accessToken)
