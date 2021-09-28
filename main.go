@@ -11,7 +11,8 @@ func main() {
 	time.Local = time.FixedZone("JST", 9*60*60)
 
 	db := infrastructure.NewDB()
-	r := infrastructure.NewRouting(db)
+	awsS3 := infrastructure.NewAwsS3()
+	r := infrastructure.NewRouting(db, awsS3)
 	r.SetMiddleware()
 	r.Run()
 }

@@ -8,18 +8,20 @@ import (
 )
 
 type Routing struct {
-	DB   *DB
-	Gin  *gin.Engine
-	Port string
+	DB    *DB
+	Gin   *gin.Engine
+	AwsS3 *AwsS3
+	Port  string
 }
 
-func NewRouting(db *DB) *Routing {
+func NewRouting(db *DB, awsS3 *AwsS3) *Routing {
 	c := NewConfig()
 
 	r := &Routing{
-		DB:   db,
-		Gin:  gin.Default(),
-		Port: c.Routing.Port,
+		DB:    db,
+		Gin:   gin.Default(),
+		AwsS3: awsS3,
+		Port:  c.Routing.Port,
 	}
 	r.setRouting()
 	return r
@@ -27,7 +29,7 @@ func NewRouting(db *DB) *Routing {
 
 func (r *Routing) setRouting() {
 	usersController := controllers.NewUsersController(r.DB)
-	postsController := controllers.NewPostsController(r.DB)
+	postsController := controllers.NewPostsController(r.DB, r.AwsS3)
 	v1 := r.Gin.Group("v1")
 	v1.Use(middleware.RecordLogAndTime)
 	{

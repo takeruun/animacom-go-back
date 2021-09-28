@@ -1,5 +1,9 @@
 package models
 
+import (
+	"mime/multipart"
+)
+
 type Post struct {
 	Model
 	UserId     uint   `json:"userId" form:"userId"`
@@ -17,4 +21,13 @@ type PostImage struct {
 	PostId uint
 	Image  string `json:"image"`
 	Post   Post
+}
+
+type PostForm struct {
+	UserId     uint
+	CategoryId uint                  `form:"categoryId"`
+	Title      string                `form:"title"`
+	SubTitle   string                `form:"subTitle"`
+	Body       string                `form:"body"`
+	Image      *multipart.FileHeader `form:"image"`
 }

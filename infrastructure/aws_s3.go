@@ -25,8 +25,9 @@ func NewAwsS3() *AwsS3 {
 				AccessKeyID:     c.AWS.S3.AccessKeyID,
 				SecretAccessKey: c.AWS.S3.SecretAccessKey,
 			}),
-			Region:   aws.String(c.AWS.S3.Region),
-			Endpoint: &c.AWS.S3.Endpoint,
+			Endpoint:         aws.String(c.AWS.S3.Endpoint),
+			Region:           aws.String(c.AWS.S3.Region),
+			S3ForcePathStyle: aws.Bool(true),
 		},
 	}))
 
