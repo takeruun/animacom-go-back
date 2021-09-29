@@ -3,6 +3,8 @@ package usecase
 import (
 	"app/models"
 	"app/usecase/auth"
+
+	"github.com/google/uuid"
 )
 
 type PostsInteractor struct {
@@ -25,7 +27,8 @@ func (interactor *PostsInteractor) Create(p models.PostForm, accessToken string)
 		return models.Post{}, error(err)
 	}
 
-	image_url, err := interactor.AwsS3.Upload(file, "tset", "png")
+	uuid, _ := uuid.NewUUID()
+	image_url, err := interactor.AwsS3.Upload(file, uuid.String(), "png")
 	if err != nil {
 		return models.Post{}, error(err)
 	}
