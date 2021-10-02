@@ -3,6 +3,7 @@ package usecase
 import (
 	"app/models"
 	"app/usecase/auth"
+	"errors"
 
 	"github.com/google/uuid"
 )
@@ -40,6 +41,26 @@ func (interactor *PostsInteractor) Create(p models.PostForm, accessToken string)
 	}
 
 	interactor.PostImages.Add(db, models.PostImage{PostId: post.ID, Image: image_url})
+
+	return post, nil
+}
+
+func (interactor *PostsInteractor) Get(id int, accessToken string) (post models.Post, err error) {
+	db := interactor.DB.Connect()
+
+	auth, err := auth.ParseToken(accessToken)
+	if err != nil {
+		return models.Post{}, error(err)
+	}
+
+	post, err = interactor.Posts.FindByID(db, id)
+	if err != nil {
+		return models.Post{}, error(err)
+	}
+
+	if post.UserId != uint(auth.Uid) {
+		return models.Post{}, errors.New("Not your posts")
+	}
 
 	return post, nil
 }

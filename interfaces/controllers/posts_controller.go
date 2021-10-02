@@ -7,6 +7,7 @@ import (
 	usecase "app/usecase"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type PostsController struct {
@@ -25,8 +26,16 @@ func NewPostsController(db database.DB, awsS3 aws.AwsS3) *PostsController {
 }
 
 func (controller *PostsController) Get(c Context, accessToken string) {
+	id, _ := strconv.Atoi(c.Param("id"))
 
-	c.JSON(200, NewH("success", nil))
+	post, err := controller.Interactor.Get(id, accessToken)
+
+	if err != nil {
+		c.JSON(500, NewH(err.Error(), nil))
+		return
+	}
+
+	c.JSON(200, NewH("success", post))
 }
 
 func (controller *PostsController) Create(c Context, accessToken string) {
