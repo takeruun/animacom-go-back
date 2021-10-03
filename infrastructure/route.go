@@ -38,7 +38,7 @@ func (r *Routing) setRouting() {
 			posts := users.Group("posts")
 			posts.Use(middleware.LoginCheckMiddleware())
 			{
-				posts.GET("", func(c *gin.Context) { postsController.Get(c, c.GetHeader("Access-Token")) })
+				posts.GET("/:id", func(c *gin.Context) { postsController.Get(c, c.GetHeader("Access-Token")) })
 				posts.POST("", func(c *gin.Context) { postsController.Create(c, c.GetHeader("Access-Token")) })
 			}
 
