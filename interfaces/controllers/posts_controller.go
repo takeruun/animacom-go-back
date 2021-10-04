@@ -25,10 +25,10 @@ func NewPostsController(db database.DB, awsS3 aws.AwsS3) *PostsController {
 	}
 }
 
-func (controller *PostsController) Get(c Context, accessToken string) {
+func (controller *PostsController) Show(c Context, accessToken string) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	post, err := controller.Interactor.Get(id, accessToken)
+	post, err := controller.Interactor.Show(id, accessToken)
 
 	if err != nil {
 		c.JSON(500, NewH(err.Error(), nil))

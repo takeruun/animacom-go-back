@@ -45,7 +45,7 @@ func (interactor *PostsInteractor) Create(p models.PostForm, accessToken string)
 	return post, nil
 }
 
-func (interactor *PostsInteractor) Get(id int, accessToken string) (post models.Post, err error) {
+func (interactor *PostsInteractor) Show(id int, accessToken string) (post models.Post, err error) {
 	db := interactor.DB.Connect()
 
 	auth, err := auth.ParseToken(accessToken)
