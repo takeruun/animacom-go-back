@@ -64,3 +64,23 @@ func (interactor *PostsInteractor) Show(id int, accessToken string) (post models
 
 	return post, nil
 }
+
+func (interactor *PostsInteractor) Get(accessToken string) (posts []models.Post, err error) {
+	db := interactor.DB.Connect()
+
+	auth, err := auth.ParseToken(accessToken)
+	if err != nil {
+		return []models.Post{}, error(err)
+	}
+
+	posts, err = interactor.Posts.FindByUserId(db, auth.Uid)
+	if err != nil {
+		return []models.Post{}, error(err)
+	}
+
+	if posts[0].UserId != uint(auth.Uid) {
+		return []models.Post{}, errors.New("Not your posts")
+	}
+
+	return posts, nil
+}

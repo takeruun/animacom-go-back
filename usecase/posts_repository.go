@@ -9,4 +9,5 @@ import (
 type PostsRepository interface {
 	Add(db *gorm.DB, p models.Post) (post models.Post, err error)
 	FindByID(db *gorm.DB, id int) (post models.Post, err error)
+	FindByUserId(db *gorm.DB, userId int) (posts []models.Post, err error)
 }

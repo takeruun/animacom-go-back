@@ -27,3 +27,12 @@ func (repo *PostsRepository) FindByID(db *gorm.DB, id int) (post models.Post, er
 
 	return post, nil
 }
+
+func (repo *PostsRepository) FindByUserId(db *gorm.DB, userId int) (posts []models.Post, err error) {
+	result := db.First(&posts, userId)
+	if result.Error != nil {
+		return []models.Post{}, errors.New(result.Error.Error())
+	}
+
+	return posts, nil
+}
