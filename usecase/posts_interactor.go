@@ -84,3 +84,25 @@ func (interactor *PostsInteractor) Get(accessToken string) (posts []models.Post,
 
 	return posts, nil
 }
+
+func (interactor *PostsInteractor) Delete(id int, accessToken string) (err error) {
+	db := interactor.DB.Connect()
+
+	auth, err := auth.ParseToken(accessToken)
+	if err != nil {
+		return error(err)
+	}
+
+	post, err := interactor.Posts.FindByID(db, id)
+
+	if post.UserId != uint(auth.Uid) {
+		return errors.New("Not your posts")
+	}
+
+	err = interactor.Posts.Remove(db, id)
+	if err != nil {
+		return error(err)
+	}
+
+	return nil
+}

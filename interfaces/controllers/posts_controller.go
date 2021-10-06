@@ -66,3 +66,15 @@ func (controller *PostsController) Create(c Context, accessToken string) {
 
 	c.JSON(200, NewH("success", post))
 }
+
+func (controller *PostsController) Delete(c Context, accessToken string) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	err := controller.Interactor.Delete(id, accessToken)
+
+	if err != nil {
+		c.JSON(500, NewH(err.Error(), nil))
+		return
+	}
+
+	c.JSON(200, NewH("success", nil))
+}

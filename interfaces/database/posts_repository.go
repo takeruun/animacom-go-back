@@ -36,3 +36,12 @@ func (repo *PostsRepository) FindByUserId(db *gorm.DB, userId int) (posts []mode
 
 	return posts, nil
 }
+
+func (repo *PostsRepository) Remove(db *gorm.DB, id int) (err error) {
+	result := db.Delete(id)
+	if result.Error != nil {
+		return errors.New(result.Error.Error())
+	}
+
+	return nil
+}
