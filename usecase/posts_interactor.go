@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"app/models"
-	"app/usecase/auth"
+	models "app/models"
+	auth "app/usecase/auth"
 	"errors"
 
 	"github.com/google/uuid"

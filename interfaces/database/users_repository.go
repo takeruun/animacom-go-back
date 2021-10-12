@@ -1,7 +1,7 @@
 package database
 
 import (
-	"app/models"
+	models "app/models"
 	"errors"
 
 	"github.com/jinzhu/gorm"
