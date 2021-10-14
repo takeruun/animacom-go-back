@@ -15,6 +15,7 @@ func (repo *UsersRepository) FindByID(db *gorm.DB, id int) (user models.User, er
 	if user.ID <= 0 {
 		return models.User{}, errors.New("user is not found")
 	}
+
 	return user, nil
 }
 
